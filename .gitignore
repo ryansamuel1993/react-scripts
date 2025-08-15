@@ -1,0 +1,15 @@
+# Packages
+node_modules/
+yarn.lock
+.prettierrc.js
+*.log
+package-lock.json
+
+# Build output
+dist/
+
+# OS
+.DS_Store
+
+# Vi
+*.swp

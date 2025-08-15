@@ -1,0 +1,85 @@
+name: Node.js Package
+
+on:
+  push:
+    branches: [main]        # publish pipeline runs on pushes to main
+  workflow_dispatch:         # allow manual runs
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install --no-audit --no-fund
+      # - run: npm test   # uncomment if you have tests
+
+  publish-npm:
+    # run on push to main or manual run, after build succeeds
+    needs: build
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+
+      # Install only what’s needed to run npm view/publish (no dev cache required)
+      - run: npm install --no-audit --no-fund
+
+      # Decide whether to publish (compare local package.json version vs npm)
+      - name: Decide publish
+        id: decide
+        shell: bash
+        run: |
+          set -euo pipefail
+          NAME=$(node -p "require('./package.json').name")
+          CURR=$(node -p "require('./package.json').version")
+
+          echo "Package: $NAME"
+          echo "Local version: $CURR"
+
+          # Try to read the published version. If package doesn't exist, mark as first publish.
+          if PUBLISHED=$(npm view "$NAME" version 2>/dev/null); then
+            echo "Published version: $PUBLISHED"
+            if [ "$CURR" = "$PUBLISHED" ]; then
+              echo "No publish needed: $NAME@$CURR is already on npm."
+              echo "publish=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          else
+            echo "Package not found on npm. This looks like a first publish."
+            echo "first_publish=true" >> "$GITHUB_OUTPUT"
+          fi
+
+          echo "publish=true" >> "$GITHUB_OUTPUT"
+
+      # Publish only if decide.publish == true
+      - name: Publish to npm
+        if: steps.decide.outputs.publish == 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
+        run: |
+          set -euo pipefail
+          # Use --access public on first publish of a scoped package
+          if [ "${{ steps.decide.outputs.first_publish }}" = "true" ]; then
+            echo "First publish detected → using --access public"
+            npm publish --access public
+          else
+            npm publish
+          fi
+
+      - name: Done (skipped)
+        if: steps.decide.outputs.publish != 'true'
+        run: echo "Publish skipped."
