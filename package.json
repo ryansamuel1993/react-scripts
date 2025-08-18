@@ -1,6 +1,6 @@
 {
-  "name": "@rsamuel1993/ts-scripts",
-  "version": "1.0.0",
+  "name": "@rsamuel1993/react-scripts",
+  "version": "1.0.2",
   "author": "Ryan Samuel",
   "description": "A shareable TS scripts library for React",
   "type": "module",
@@ -16,12 +16,14 @@
     "lint:fix": "npm run lint -- --fix",
     "create:component": "tsx ./scripts/component.ts",
     "create:page": "tsx ./scripts/page.ts",
-    "create:hook": "tsx ./scripts/hook.ts"
+    "create:hook": "tsx ./scripts/hook.ts",
+    "create:folders": "tsx ./scripts/folders.ts"
   },
   "bin": {
     "create-component": "dist/scripts/component.js",
     "create-page": "dist/scripts/page.js",
-    "create-hook": "dist/scripts/hook.js"
+    "create-hook": "dist/scripts/hook.js",
+    "create-folders": "dist/scripts/folders.js"
   },
   "files": [
     "dist"
@@ -33,7 +35,7 @@
     "commander": "^12.0.0"
   },
   "devDependencies": {
-    "@rsamuel1993/eslint-config-node": "^1.0.2",
+    "@rsamuel1993/eslint-config-node": "^1.0.4",
     "@types/node": "^20.0.0",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.16",

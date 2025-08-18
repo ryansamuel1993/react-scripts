@@ -4,7 +4,7 @@ import globals from 'globals';
 
 export default [
   {
-    ignores: ['docker-compose.yml'],
+    ignores: ['node_modules', 'dist', 'build', 'coverage', 'README.md'],
   },
 
   ...config,
@@ -21,12 +21,6 @@ export default [
         ...globals.node,
       },
     },
-    rules: {
-      'react/jsx-uses-react': 'off',
-      'react/react-in-jsx-scope': 'off',
-      'react/jsx-no-target-blank': 'off',
-      'react/prop-types': 'off',
-      'react-refresh/only-export-components': 'off',
-    },
+    rules: {},
   },
 ];

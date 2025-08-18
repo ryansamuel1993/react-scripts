@@ -1,5 +1,5 @@
 🌟============================================================🌟
-                 @rsamuel1993/ts-scripts
+                 @rsamuel1993/react-scripts
 🌟============================================================🌟
 
 ✨ Tiny scaffolding CLIs for React / Next.js projects ✨
@@ -26,47 +26,42 @@
 
 💨 One-off (no install):
 
-```text
-npx @rsamuel1993/ts-scripts create-page customer
+npx @rsamuel1993/react-scripts create-page customer
 
-npm i -D @rsamuel1993/ts-scripts
-# pnpm add -D @rsamuel1993/ts-scripts
-# yarn add -D @rsamuel1993/ts-scripts
+npm i -D @rsamuel1993/react-scripts
+
+# pnpm add -D @rsamuel1993/react-scripts
+
+# yarn add -D @rsamuel1993/react-scripts
 
 {
   "scripts": {
     "create:component": "create-component",
     "create:page": "create-page",
-    "create:hook": "create-hook"
+    "create:hook": "create-hook",
+    "create:folders": "create-folders"  
   }
 }
 
 npm run create:page -- customer
 npm run create:component -- button/alert
 npm run create:hook -- auth/verification
-
+npm run create:folders
 
 2️⃣ Next.js Pages (Pages Router)
 create-component button/alert
 create-page customer
 
 📁 Nested routes:
-
 create-page dashboard/settings
 
-
 Generates:
-
 .../pages/dashboard/settings/index.tsx
 
-
 3️⃣ Hooks
-
 create-hook auth/verification
 
-
 Generates:
-
 <repo>/(hooks|src/hooks)/auth/useVerification.tsx
 
 import { useCallback, useMemo, useRef, useState } from 'react';
@@ -80,11 +75,32 @@ export const useVerification = (): UseVerificationReturn => {
 
 export default useVerification;
 
-
 🔤 Name handling:
-
 create-hook useUser → useUser.tsx
 create-hook user → useUser.tsx (auto "use" prefix)
 create-hook auth/verification → auth/useVerification.tsx
 
+4️⃣ 🗂️ Folder Scaffold (🆕)
+create-folders
 
+# Creates the standard structure under <repo>/src if it exists; otherwise prompts to use <repo> root
+
+# Folders created
+
+# - pages
+
+# - features
+
+# - components
+
+# - hooks
+
+# - context
+
+# - services
+
+Examples:
+create-folders                       # prompts if no src/ found
+create-folders --yes                 # skip prompt; proceed in repo root if src/ missing
+create-folders --dry-run             # preview without creating
+create-folders --root ./apps/web     # start search from a specific directory
