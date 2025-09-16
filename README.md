@@ -26,13 +26,13 @@
 
 💨 One-off (no install):
 
-npx @rsamuel1993/react-scripts create-page customer
+# npx @rsamuel1993/react-scripts create-page customer #
 
-npm i -D @rsamuel1993/react-scripts
+or
 
-# pnpm add -D @rsamuel1993/react-scripts
+# npm i -D @rsamuel1993/react-scripts #
 
-# yarn add -D @rsamuel1993/react-scripts
+ 
 
 {
   "scripts": {
@@ -48,8 +48,10 @@ npm run create:component -- button/alert
 npm run create:hook -- auth/verification
 npm run create:folders
 
+1️⃣ Components
+create-component button/alert 
+
 2️⃣ Next.js Pages (Pages Router)
-create-component button/alert
 create-page customer
 
 📁 Nested routes:
